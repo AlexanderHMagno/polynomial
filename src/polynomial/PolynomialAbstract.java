@@ -71,7 +71,11 @@ public abstract class PolynomialAbstract implements Polynomial {
 
     @Override
     public boolean isSame(Polynomial poly) {
-        return false;
+
+        if (this == poly) return true;
+        if (!(poly instanceof PolynomialImpl)) return false;
+
+        return this.toString().equals(poly.toString());
     }
 
     @Override
