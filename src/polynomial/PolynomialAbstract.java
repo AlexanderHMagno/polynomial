@@ -5,12 +5,21 @@ import java.util.*;
 
 public abstract class PolynomialAbstract implements Polynomial {
 
-    TreeMap<Integer, Integer> PolynomialTree = new TreeMap<Integer, Integer >(Collections.reverseOrder());
+    private TreeMap<Integer, Integer> PolynomialTree = new TreeMap<Integer, Integer >(Collections.reverseOrder());
+    private char varLabel = 'x';
     public PolynomialAbstract() {
             this.addTerm(0,0);
     }
 
     public PolynomialAbstract (String PolyString) throws IllegalArgumentException {
+
+        //Check //If the Polynomial is using a different label than x
+        String options = PolyString.toLowerCase().replaceAll("[^a-z]","");
+        if (options.length() > 0) {
+            this.varLabel = options.charAt(0);
+        }
+
+        //Check find the terms of this Polynomial
         String[] terms = PolyString
                 .toLowerCase()
                 .replace(" ", "")
@@ -26,22 +35,23 @@ public abstract class PolynomialAbstract implements Polynomial {
 
             String[] bounds = term.split("\\^");
             int coefficient = Integer.parseInt(bounds[0].replaceAll("[^0-9\\-]",""));
-            int power;
-
-            if (bounds.length > 1) {
-                power = Integer.parseInt(bounds[1]);
-            } else {
-                //it contains a variable?
-                power = bounds[0]
-                        .replaceAll("[a-z]", "x")
-                        .contains("x") ? 1 : 0 ;
-            }
+            int power = (bounds.length > 1) ? Integer.parseInt(bounds[1]) :
+                        (bounds[0].indexOf(this.varLabel) >= 0 ? 1 : 0) ;
 
             this.addTerm(coefficient,power);
         }
 
     }
 
+    /**
+     * Add this polynomial to another and return the result as another polynomial.
+     * Note: As per implementation, any polynomial with different variable will be added as equals
+     *      as an abstraction x = [a-z] therefore, 4x^2 + 4y^2 = 8y^2 the variable Label to be used
+     *      equals to the other Polynomial varLAbel that is added to this.
+     * @param other the other polynomial to be added
+     * @return
+     * @throws IllegalArgumentException
+     */
     @Override
     public Polynomial add(Polynomial other) throws IllegalArgumentException {
 
@@ -71,11 +81,7 @@ public abstract class PolynomialAbstract implements Polynomial {
 
     @Override
     public boolean isSame(Polynomial poly) {
-
-        if (this == poly) return true;
-        if (!(poly instanceof PolynomialImpl)) return false;
-
-        return this.toString().equals(poly.toString());
+        return this.equals(poly);
     }
 
     @Override
@@ -115,9 +121,29 @@ public abstract class PolynomialAbstract implements Polynomial {
             //Check if it needs to add a plus symbol
             String addSymbol = (value > 0 && key != this.getDegree())? "+" : "";
             data += addSymbol + value;
-            data += key == 0 ? "" : "x" + "^" + key + " " ;
+            data += key == 0 ? "" : this.varLabel + "^" + key + " " ;
         }
 
         return data.trim();
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+
+        // If the object is compared with itself then return true
+        if (other == this) return true;
+        //Check if other is an instance of Polynomial
+        if (!(other instanceof Polynomial)) return false;
+        // typecast other to Polynomial so that we can compare data members
+        Polynomial otherPoly = (Polynomial) other;
+
+        // Compare the data to String which is a representation of this object and its terms
+        return this.toString().equals(otherPoly.toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(PolynomialTree.toString());
     }
 }
