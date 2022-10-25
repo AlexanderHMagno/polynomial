@@ -14,7 +14,7 @@ public class PolynomialImpl extends PolynomialAbstract {
         Polynomial test = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1 + 10x");
 
 
-        System.out.println(test.toString());
+//        System.out.println(test.evaluate(2));
     }
 }
 

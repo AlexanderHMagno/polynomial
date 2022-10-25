@@ -50,9 +50,9 @@ public class PolynomialImplTest {
     public void testGetDegree () {
 
         assertEquals(3, this.p1.getDegree());
-        assertEquals(4, this.p2.getDegree());
+        assertEquals(5, this.p2.getDegree());
         assertEquals(1, this.p3.getDegree());
-        assertEquals(1, this.hiddenX.getDegree());
+        assertEquals(0, this.hiddenX.getDegree());
 
         this.hiddenX.addTerm(25,12);
         assertEquals(12, this.hiddenX.getDegree());
@@ -65,12 +65,12 @@ public class PolynomialImplTest {
         assertEquals(1, this.hyper.getCoefficient(10));
         assertEquals(2, this.hyper.getCoefficient(9));
         assertEquals(3, this.hyper.getCoefficient(8));
-        assertEquals(4, this.hyper.getCoefficient(7));
+        assertEquals(-4, this.hyper.getCoefficient(7));
         assertEquals(5, this.hyper.getCoefficient(6));
-        assertEquals(6, this.hyper.getCoefficient(5));
+        assertEquals(-6, this.hyper.getCoefficient(5));
         assertEquals(7, this.hyper.getCoefficient(4));
-        assertEquals(8, this.hyper.getCoefficient(3));
-        assertEquals(9, this.hyper.getCoefficient(2));
+        assertEquals(-8, this.hyper.getCoefficient(3));
+        assertEquals(-9, this.hyper.getCoefficient(2));
         assertEquals(2, this.hyper.getCoefficient(1));
         assertEquals(9, this.hyper.getCoefficient(0));
 
@@ -82,9 +82,9 @@ public class PolynomialImplTest {
     public void testEvaluate(){
 
 //        this.p1 = new PolynomialImpl("4x^3 +3x^1 -5");
-        assertEquals( 385.00 ,this.p1.evaluate(5.00), 0.001);
+        assertEquals( 510.00 ,this.p1.evaluate(5.00), 0.001);
 //        this.p2 = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1");
-        assertEquals(-90.00, this.p2.evaluate(2.00), 0.001);
+        assertEquals(-95.00, this.p2.evaluate(2.00), 0.001);
 //        this.p3 = new PolynomialImpl("-3x -2x -5 + 11x^1");
         assertEquals(55.00, this.p3.evaluate(10.00), 0.001);
 //        this.hiddenX = new PolynomialImpl("-3 -2 -5 + 11");
@@ -141,7 +141,7 @@ public class PolynomialImplTest {
         assertEquals("-2x^5 -3x^4 +11x^1 -5", this.p2.toString());
         assertEquals("6x^1 -5", this.p3.toString());
         assertEquals("1", this.hiddenX.toString());
-        assertEquals("1x^10 + 2x^9 + 3x^8 - 4x^7 + 5x^6 - 6x^5 + 7x^4 - 8x^3 - 9x^2 + 2x^1 + 9", this.hyper.toString());
+        assertEquals("1x^10 +2x^9 +3x^8 -4x^7 +5x^6 -6x^5 +7x^4 -8x^3 -9x^2 +2x^1 +9", this.hyper.toString());
         assertEquals("0", this.empty.toString());
     }
 
