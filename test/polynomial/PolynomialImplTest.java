@@ -16,6 +16,8 @@ public class PolynomialImplTest {
     private Polynomial hyper;
     private Polynomial hyperY;
     private Polynomial empty;
+    private Polynomial classExample;
+    private Polynomial wideSpace;
 
     /**
      * Create instances to test the implementation.
@@ -31,6 +33,8 @@ public class PolynomialImplTest {
         this.hyper = new PolynomialImpl("2x^9 + 3x^8 + 5x^6 - 4x^7 - 6x^5 + 7x^4 - 8x^3 - 9x^2 + 2x + 9 + 1x^10");
         this.hyperY = new PolynomialImpl("2y^9 + 3y^8 + 5y^6 - 4y^7 - 6y^5 + 7y^4 - 8y^3 - 9y^2 + 2y + 9 + 1y^10");
         this.empty = new PolynomialImpl();
+        this.classExample = new PolynomialImpl("3x^4-5x^3+2x-4");
+        this.wideSpace = new PolynomialImpl("3 x ^ 4       -         5 x ^ 3 + 2 x     - 4");
     }
 
     /**
@@ -121,6 +125,8 @@ public class PolynomialImplTest {
 //        this.hyper = new PolynomialImpl("1x^10 + 2x^9 + 3x^8 - 4x^7 + 5x^6 - 6x^5 + 7x^4 - 8x^3 - 9x^2 + 2x + 9");
         assertEquals( 2.00 , this.hyper.evaluate(1), 0.001 );
         assertEquals( 2.00 , this.hyperY.evaluate(1), 0.001 );
+        assertEquals(40.0625, this.classExample.evaluate((2.50)),0.001);
+        assertEquals(40.0625, this.wideSpace.evaluate((2.50)),0.001);
 
     }
 
@@ -184,6 +190,8 @@ public class PolynomialImplTest {
         assertEquals("1x^10 +2x^9 +3x^8 -4x^7 +5x^6 -6x^5 +7x^4 -8x^3 -9x^2 +2x^1 +9", this.hyper.toString());
         assertEquals("1y^10 +2y^9 +3y^8 -4y^7 +5y^6 -6y^5 +7y^4 -8y^3 -9y^2 +2y^1 +9", this.hyperY.toString());
         assertEquals("0", this.empty.toString());
+        assertEquals("3x^4 -5x^3 +2x^1 -4", this.classExample.toString());
+        assertEquals("3x^4 -5x^3 +2x^1 -4", this.wideSpace.toString());
     }
 
     /**

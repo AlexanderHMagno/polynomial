@@ -3,6 +3,10 @@ package polynomial;
 import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * Abstract Class that represents a PolynomialAbstract. It implements the Polynomial
+ * interface, it has a varLabel and a treemap to store the terms.
+ */
 public abstract class PolynomialAbstract implements Polynomial {
 
     private TreeMap<Integer, Integer> PolynomialTree = new TreeMap<Integer, Integer >(Collections.reverseOrder());
@@ -59,10 +63,14 @@ public abstract class PolynomialAbstract implements Polynomial {
      *      in the new object will depend on the other Polynomial varLAbel that is added to this.
      * @param other the other polynomial to be added
      * @return A polynomial with the sum of terms of this and other Polynomial.
-     * @throws IllegalArgumentException If a term has a negative power.
+     * @throws IllegalArgumentException If other is not a concrete class of the same type PolynomialAbstract.
      */
     @Override
     public Polynomial add(Polynomial other) throws IllegalArgumentException {
+
+        if (!(other instanceof PolynomialAbstract)) {
+            throw new IllegalArgumentException();
+        }
 
         Polynomial merge = new PolynomialImpl(other.toString());
 
@@ -80,6 +88,11 @@ public abstract class PolynomialAbstract implements Polynomial {
     public void addTerm(int coefficient, int power) throws IllegalArgumentException {
         if(power < 0) {
             throw new IllegalArgumentException("No negative power allowed");
+        }
+
+        //This class should store only terms with non-zero coefficients.
+        if(coefficient == 0 && power != 0) {
+            return;
         }
 
         //Add coefficients if needed
