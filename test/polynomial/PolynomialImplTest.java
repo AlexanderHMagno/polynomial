@@ -20,10 +20,9 @@ public class PolynomialImplTest {
 
     /**
      * Create instances to test the implementation.
-     * @throws Exception
      */
     @org.junit.Before
-    public void setUp() throws Exception {
+    public void setUp(){
 
         this.p1 = new PolynomialImpl("4x^3 +3x^1 -5");
         this.p2 = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1");
@@ -75,6 +74,15 @@ public class PolynomialImplTest {
     }
 
     /**
+     * Check MapTree will not add 0 coefficient.
+     */
+    @Test
+    public void testEmptyTree () {
+        this.empty.addTerm(0,30);
+        assertEquals("0", this.empty.toString());
+    }
+
+    /**
      * Check the highest power on this Polynomial.
      * If a term is added, and that power is greater, then that power should be the degree
      */
@@ -92,7 +100,7 @@ public class PolynomialImplTest {
     }
 
     /**
-     * Obtain the coefficient depending the power, if power is not found
+     * Obtain the coefficient depending on the power, if power is not found
      * return 0.
      */
     @Test
@@ -120,15 +128,15 @@ public class PolynomialImplTest {
     @Test
     public void testEvaluate(){
 
-//        this.p1 = new PolynomialImpl("4x^3 +3x^1 -5");
+        //this.p1 = new PolynomialImpl("4x^3 +3x^1 -5");
         assertEquals( 510.00 ,this.p1.evaluate(5.00), 0.001);
-//        this.p2 = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1");
+        //this.p2 = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1");
         assertEquals(-95.00, this.p2.evaluate(2.00), 0.001);
-//        this.p3 = new PolynomialImpl("-3x -2x -5 + 11x^1");
+        //this.p3 = new PolynomialImpl("-3x -2x -5 + 11x^1");
         assertEquals(55.00, this.p3.evaluate(10.00), 0.001);
-//        this.hiddenX = new PolynomialImpl("-3 -2 -5 + 11");
+        //this.hiddenX = new PolynomialImpl("-3 -2 -5 + 11");
         assertEquals(1.00, this.hiddenX.evaluate(10.25),0.001);
-//        this.hyper = new PolynomialImpl("1x^10 + 2x^9 + 3x^8 - 4x^7 + 5x^6 - 6x^5 + 7x^4 - 8x^3 - 9x^2 + 2x + 9");
+        //this.hyper = new PolynomialImpl("1x^10 + 2x^9 + 3x^8 - 4x^7 + 5x^6 - 6x^5 + 7x^4 - 8x^3 - 9x^2 + 2x + 9");
         assertEquals( 2.00 , this.hyper.evaluate(1), 0.001 );
         assertEquals( 2.00 , this.hyperY.evaluate(1), 0.001 );
         assertEquals(40.0625, this.classExample.evaluate((2.50)),0.001);
@@ -145,7 +153,7 @@ public class PolynomialImplTest {
         assertFalse(this.p3.isSame(this.hiddenX));
 
         assertTrue(this.p1.isSame(this.p1));
-//        ("4x^3 +3x^1 -5");
+
         this.empty.addTerm(-5,0);
         this.empty.addTerm(3,1);
         this.empty.addTerm(4,3);
@@ -167,9 +175,9 @@ public class PolynomialImplTest {
         Polynomial merge = this.p1.add(this.empty);
         assertTrue(this.p1.isSame(merge));
         //make sure is not mutated
-        assertTrue(zeroP1 ==  this.p1.getCoefficient(0));
-        assertTrue(oneP1 ==  this.p1.getCoefficient(1));
-        assertTrue(threeP1 == this.p1.getCoefficient(1));
+        assertEquals(zeroP1, this.p1.getCoefficient(0));
+        assertEquals(oneP1, this.p1.getCoefficient(1));
+        assertEquals(threeP1, this.p1.getCoefficient(1));
 
 
         //Test 2 Add three
@@ -199,7 +207,7 @@ public class PolynomialImplTest {
     }
 
     /**
-     * AS the method isSame is using the equals method, we need to test the
+     * AS the method isSame is using the equal's method, we need to test the
      * hashCode is working as well, and returning the same hash for the same tooString.
      */
     @Test

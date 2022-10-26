@@ -21,6 +21,21 @@ public class PolynomialImpl extends PolynomialAbstract {
         super();
     }
 
+
+    public static void main(String[] args) {
+
+       String[] stringy = {"3x^2", "3x^2 0"};
+
+        for (String st: stringy) {
+            Polynomial error1 = new PolynomialImpl(st);
+            System.out.println(error1.toString());
+        }
+
+
+
+
+
+    }
 }
 
 

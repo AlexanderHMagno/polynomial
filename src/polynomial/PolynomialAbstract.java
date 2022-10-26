@@ -16,7 +16,7 @@ public abstract class PolynomialAbstract implements Polynomial {
      * Constructor that implements an Empty Polynomial.
      */
     public PolynomialAbstract() {
-            this.addTerm(0,0);
+
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class PolynomialAbstract implements Polynomial {
 
             try {
                 String[] bounds = term.split("\\^");
-                int coefficient = Integer.parseInt(bounds[0].replaceAll("[^0-9\\-]",""));
+                int coefficient = Integer.parseInt(bounds[0].replaceAll( "" + this.varLabel,""));
                 int power = (bounds.length > 1) ? Integer.parseInt(bounds[1]) :
                         (bounds[0].indexOf(this.varLabel) >= 0 ? 1 : 0);
 
@@ -87,9 +87,8 @@ public abstract class PolynomialAbstract implements Polynomial {
         if(power < 0) {
             throw new IllegalArgumentException("No negative power allowed");
         }
-
         //This class should store only terms with non-zero coefficients.
-        if(coefficient == 0 && power != 0) {
+        if(coefficient == 0) {
             return;
         }
 
@@ -132,7 +131,12 @@ public abstract class PolynomialAbstract implements Polynomial {
     @Override
     public String toString() {
 
+        if (this.PolynomialTree.isEmpty()) {
+            return "0";
+        }
+
         String data = "";
+
         for(Map.Entry<Integer,Integer> term : this.PolynomialTree.entrySet()) {
             Integer key = term.getKey();
             Integer value = term.getValue();
