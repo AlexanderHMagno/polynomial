@@ -17,7 +17,6 @@ public class PolynomialImplTest {
     private Polynomial hyperY;
     private Polynomial empty;
     private Polynomial classExample;
-    private Polynomial wideSpace;
 
     /**
      * Create instances to test the implementation.
@@ -28,13 +27,12 @@ public class PolynomialImplTest {
 
         this.p1 = new PolynomialImpl("4x^3 +3x^1 -5");
         this.p2 = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1");
-        this.p3 = new PolynomialImpl("-3x -2x -5 + 11x^1");
-        this.hiddenX = new PolynomialImpl("-3 -2 -5 + 11");
-        this.hyper = new PolynomialImpl("2x^9 + 3x^8 + 5x^6 - 4x^7 - 6x^5 + 7x^4 - 8x^3 - 9x^2 + 2x + 9 + 1x^10");
-        this.hyperY = new PolynomialImpl("2y^9 + 3y^8 + 5y^6 - 4y^7 - 6y^5 + 7y^4 - 8y^3 - 9y^2 + 2y + 9 + 1y^10");
+        this.p3 = new PolynomialImpl("-3x -2x -5 +11x^1");
+        this.hiddenX = new PolynomialImpl("-3 -2 -5 +11");
+        this.hyper = new PolynomialImpl("2x^9 +3x^8 +5x^6 -4x^7 -6x^5 +7x^4 -8x^3 -9x^2 +2x +9 +1x^10");
+        this.hyperY = new PolynomialImpl("2y^9 +3y^8 +5y^6 -4y^7 -6y^5 +7y^4 -8y^3 -9y^2 +2y +9 +1y^10");
         this.empty = new PolynomialImpl();
-        this.classExample = new PolynomialImpl("3x^4-5x^3+2x-4");
-        this.wideSpace = new PolynomialImpl("3 x ^ 4       -         5 x ^ 3 + 2 x     - 4");
+        this.classExample = new PolynomialImpl("3x^4 -5x^3 +2x -4");
     }
 
     /**
@@ -43,7 +41,15 @@ public class PolynomialImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidPolynomial () {
 
-            Polynomial invalid = new PolynomialImpl("4x^-3 +3x^1 -5");
+        new PolynomialImpl("4x^-3 +3x^1 -5");
+    }
+
+    /**
+     * Check that no object can be created with irregular spaces values
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidPolynomialSpace () {
+        new PolynomialImpl("3 x ^ 4       -         5 x ^ 3 + 2 x     - 4");
     }
 
     /**
@@ -126,7 +132,6 @@ public class PolynomialImplTest {
         assertEquals( 2.00 , this.hyper.evaluate(1), 0.001 );
         assertEquals( 2.00 , this.hyperY.evaluate(1), 0.001 );
         assertEquals(40.0625, this.classExample.evaluate((2.50)),0.001);
-        assertEquals(40.0625, this.wideSpace.evaluate((2.50)),0.001);
 
     }
 
@@ -170,7 +175,7 @@ public class PolynomialImplTest {
         //Test 2 Add three
         this.p1 = new PolynomialImpl("4x^3 +3x^1 -5");
         this.p2 = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1");
-        this.p3 = new PolynomialImpl("-3x -2x -5 + 11x^1");
+        this.p3 = new PolynomialImpl("-3x -2x -5 +11x^1");
 
         Polynomial group = this.p1.add(this.p2).add(p3);
         // -2x^5 -3x^4 +4x^3 +20x^1 -15;
@@ -191,7 +196,6 @@ public class PolynomialImplTest {
         assertEquals("1y^10 +2y^9 +3y^8 -4y^7 +5y^6 -6y^5 +7y^4 -8y^3 -9y^2 +2y^1 +9", this.hyperY.toString());
         assertEquals("0", this.empty.toString());
         assertEquals("3x^4 -5x^3 +2x^1 -4", this.classExample.toString());
-        assertEquals("3x^4 -5x^3 +2x^1 -4", this.wideSpace.toString());
     }
 
     /**
@@ -201,7 +205,7 @@ public class PolynomialImplTest {
     @Test
     public void testHashCode() {
 
-        Polynomial test = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1 + 10x");
+        Polynomial test = new PolynomialImpl("-3x^4 -2x^5 -5 +11x^1 +10x");
         Polynomial test2 = new PolynomialImpl();
 
         test2.addTerm(11,1);
@@ -213,5 +217,4 @@ public class PolynomialImplTest {
         assertEquals(test.hashCode(),test2.hashCode());
 
     }
-
 }

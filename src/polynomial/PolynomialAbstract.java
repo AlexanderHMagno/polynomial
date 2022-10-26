@@ -35,23 +35,21 @@ public abstract class PolynomialAbstract implements Polynomial {
         //Check find the terms of this Polynomial
         String[] terms = PolyString
                 .toLowerCase()
-                .replace(" ", "")
-                .replace("^-","!")
-                .split("(?=\\+|\\-)");
+                .split(" ");
 
         for (String term:terms) {
 
-            //If power is negative we throw an error
-            if(term.contains("!")) {
-                throw new IllegalArgumentException();
+            try {
+                String[] bounds = term.split("\\^");
+                int coefficient = Integer.parseInt(bounds[0].replaceAll("[^0-9\\-]",""));
+                int power = (bounds.length > 1) ? Integer.parseInt(bounds[1]) :
+                        (bounds[0].indexOf(this.varLabel) >= 0 ? 1 : 0);
+
+                this.addTerm(coefficient,power);
+
+            } catch (IllegalArgumentException Error) {
+                throw new IllegalArgumentException(Error);
             }
-
-            String[] bounds = term.split("\\^");
-            int coefficient = Integer.parseInt(bounds[0].replaceAll("[^0-9\\-]",""));
-            int power = (bounds.length > 1) ? Integer.parseInt(bounds[1]) :
-                        (bounds[0].indexOf(this.varLabel) >= 0 ? 1 : 0) ;
-
-            this.addTerm(coefficient,power);
         }
 
     }
@@ -97,7 +95,6 @@ public abstract class PolynomialAbstract implements Polynomial {
 
         //Add coefficients if needed
         int preCoefficient = this.getCoefficient(power) + coefficient;
-
         PolynomialTree.put(power, preCoefficient);
     }
 
