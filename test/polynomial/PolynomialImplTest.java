@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * This is the class that Test PolynomialImpl.
+ */
 public class PolynomialImplTest {
 
     private Polynomial p1;
@@ -14,6 +17,10 @@ public class PolynomialImplTest {
     private Polynomial hyperY;
     private Polynomial empty;
 
+    /**
+     * Create instances to test the implementation.
+     * @throws Exception
+     */
     @org.junit.Before
     public void setUp() throws Exception {
 
@@ -26,12 +33,18 @@ public class PolynomialImplTest {
         this.empty = new PolynomialImpl();
     }
 
+    /**
+     * Check that no object can be created with negative values
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidPolynomial () {
 
             Polynomial invalid = new PolynomialImpl("4x^-3 +3x^1 -5");
     }
 
+    /**
+     * Check the method AddTerm Method, only valid cases in this test.
+     */
     @Test
     public void testAddTermPower () {
         this.p1.addTerm(4,3);
@@ -43,11 +56,18 @@ public class PolynomialImplTest {
         assertEquals(7, this.p2.getCoefficient(4));
     }
 
+    /**
+     * Check the method AddTerm Method will not accept negative powers.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidAddTermPower () {
         this.p1.addTerm(4,-3);
     }
 
+    /**
+     * Check the highest power on this Polynomial.
+     * If a term is added, and that power is greater, then that power should be the degree
+     */
     @Test
     public void testGetDegree () {
 
@@ -61,6 +81,10 @@ public class PolynomialImplTest {
 
     }
 
+    /**
+     * Obtain the coefficient depending the power, if power is not found
+     * return 0.
+     */
     @Test
     public void testCoefficient () {
 
@@ -80,6 +104,9 @@ public class PolynomialImplTest {
         assertEquals(0, this.hyper.getCoefficient(-1));
     }
 
+    /**
+     * Evaluate the Polynomial, it will return a double value
+     */
     @Test
     public void testEvaluate(){
 
@@ -97,6 +124,9 @@ public class PolynomialImplTest {
 
     }
 
+    /**
+     * Check if two polynomials are the same.
+     */
     @Test
     public void testIsSame() {
         assertFalse(this.p1.isSame(this.hiddenX));
@@ -112,6 +142,10 @@ public class PolynomialImplTest {
         assertTrue(this.p1.isSame(this.empty));
     }
 
+    /**
+     * Add 2 Polynomials and verify with the toString method the
+     * terms were correctly added
+     */
     @Test
     public void testAdd() {
 
@@ -137,6 +171,9 @@ public class PolynomialImplTest {
         assertEquals("-2x^5 -3x^4 +4x^3 +20x^1 -15", group.toString());
     }
 
+    /**
+     * Check the string is organized from greater to lower term, there is a space between terms
+     */
     @Test
     public void testToString(){
 
@@ -149,6 +186,10 @@ public class PolynomialImplTest {
         assertEquals("0", this.empty.toString());
     }
 
+    /**
+     * AS the method isSame is using the equals method, we need to test the
+     * hashCode is working as well, and returning the same hash for the same tooString.
+     */
     @Test
     public void testHashCode() {
 
@@ -164,6 +205,5 @@ public class PolynomialImplTest {
         assertEquals(test.hashCode(),test2.hashCode());
 
     }
-
 
 }

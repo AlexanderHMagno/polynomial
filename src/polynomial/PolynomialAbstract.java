@@ -7,10 +7,19 @@ public abstract class PolynomialAbstract implements Polynomial {
 
     private TreeMap<Integer, Integer> PolynomialTree = new TreeMap<Integer, Integer >(Collections.reverseOrder());
     private char varLabel = 'x';
+
+    /**
+     * Constructor that implements an Empty Polynomial.
+     */
     public PolynomialAbstract() {
             this.addTerm(0,0);
     }
 
+    /**
+     * Constructor that implements a Polynomial from a string.
+     * @param PolyString One single variable Polynomial.
+     * @throws IllegalArgumentException If there is a negative power in the Polynomial.
+     */
     public PolynomialAbstract (String PolyString) throws IllegalArgumentException {
 
         //Check //If the Polynomial is using a different label than x
@@ -45,12 +54,12 @@ public abstract class PolynomialAbstract implements Polynomial {
 
     /**
      * Add this polynomial to another and return the result as another polynomial.
-     * Note: As per implementation, any polynomial with different variable will be added as equals
-     *      as an abstraction x = [a-z] therefore, 4x^2 + 4y^2 = 8y^2 the variable Label to be used
-     *      equals to the other Polynomial varLAbel that is added to this.
+     * Note: As per implementation, any polynomial with different varLabel will be added as equals,
+     *      as an abstraction x = [a-z] therefore, 4x^2 + 4y^2 = 8y^2 the varLabel to be used
+     *      in the new object will depend on the other Polynomial varLAbel that is added to this.
      * @param other the other polynomial to be added
-     * @return
-     * @throws IllegalArgumentException
+     * @return A polynomial with the sum of terms of this and other Polynomial.
+     * @throws IllegalArgumentException If a term has a negative power.
      */
     @Override
     public Polynomial add(Polynomial other) throws IllegalArgumentException {
@@ -87,7 +96,7 @@ public abstract class PolynomialAbstract implements Polynomial {
     @Override
     public double evaluate(double x) {
 
-        double evaluator = 0;
+        double evaluator = 0    ;
 
         //Add other terms
         for (Map.Entry<Integer,Integer> term: this.PolynomialTree.entrySet()) {
