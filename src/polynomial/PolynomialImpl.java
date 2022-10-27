@@ -1,5 +1,7 @@
 package polynomial;
 
+import java.util.Arrays;
+
 /**
  * This Class represents a Polynomial it extends PolynomialAbstract.
  */
@@ -21,21 +23,21 @@ public class PolynomialImpl extends PolynomialAbstract {
         super();
     }
 
+    @Override
+    public Polynomial add(Polynomial other) throws IllegalArgumentException {
 
-    public static void main(String[] args) {
-
-       String[] stringy = {"3x^2", "3x^2 0"};
-
-        for (String st: stringy) {
-            Polynomial error1 = new PolynomialImpl(st);
-            System.out.println(error1.toString());
-        }
-
-
-
-
-
+        if (!(other instanceof PolynomialImpl)) throw new IllegalArgumentException();
+        return super.add(other);
     }
+
+    @Override
+    public boolean equals(Object other) {
+
+        //Check if other is an instance of PolynomialImpl
+        if (!(other instanceof PolynomialImpl)) return false;
+        return super.equals(other);
+    }
+
 }
 
 

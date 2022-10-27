@@ -1,6 +1,6 @@
 package polynomial;
 
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 /**
@@ -9,15 +9,13 @@ import java.util.*;
  */
 public abstract class PolynomialAbstract implements Polynomial {
 
-    private TreeMap<Integer, Integer> PolynomialTree = new TreeMap<Integer, Integer >(Collections.reverseOrder());
+    private final TreeMap<Integer, Integer> PolynomialTree = new TreeMap<>(Collections.reverseOrder());
     private char varLabel = 'x';
 
     /**
      * Constructor that implements an Empty Polynomial.
      */
-    public PolynomialAbstract() {
-
-    }
+    public PolynomialAbstract() {}
 
     /**
      * Constructor that implements a Polynomial from a string.
@@ -25,6 +23,9 @@ public abstract class PolynomialAbstract implements Polynomial {
      * @throws IllegalArgumentException If there is a negative power in the Polynomial.
      */
     public PolynomialAbstract (String PolyString) throws IllegalArgumentException {
+
+        //If Empty string we don't need to check more
+        if (PolyString.trim().length() == 0) return;
 
         //Check //If the Polynomial is using a different label than x
         String options = PolyString.toLowerCase().replaceAll("[^a-z]","");
@@ -61,12 +62,12 @@ public abstract class PolynomialAbstract implements Polynomial {
      *      in the new object will depend on the other Polynomial varLAbel that is added to this.
      * @param other the other polynomial to be added
      * @return A polynomial with the sum of terms of this and other Polynomial.
-     * @throws IllegalArgumentException If other is not a concrete class of the same type PolynomialAbstract.
+     * @throws IllegalArgumentException If other is not a concrete class of the same type Polynomial.
      */
     @Override
     public Polynomial add(Polynomial other) throws IllegalArgumentException {
 
-        if (!(other instanceof PolynomialAbstract)) {
+        if (!(other instanceof Polynomial)) {
             throw new IllegalArgumentException();
         }
 
@@ -74,9 +75,7 @@ public abstract class PolynomialAbstract implements Polynomial {
 
         //Add other terms
         for (Map.Entry<Integer,Integer> term: this.PolynomialTree.entrySet()) {
-            Integer power = term.getKey();
-            Integer coefficient = term.getValue();
-            merge.addTerm(coefficient,power);
+            merge.addTerm(term.getValue(),term.getKey());
         }
 
         return merge;
@@ -94,7 +93,14 @@ public abstract class PolynomialAbstract implements Polynomial {
 
         //Add coefficients if needed
         int preCoefficient = this.getCoefficient(power) + coefficient;
-        PolynomialTree.put(power, preCoefficient);
+
+        //Remove 0 coefficient from the tree
+        if (preCoefficient == 0) {
+            this.PolynomialTree.remove(power);
+        } else {
+            this.PolynomialTree.put(power, preCoefficient);
+        }
+
     }
 
     @Override
@@ -106,13 +112,9 @@ public abstract class PolynomialAbstract implements Polynomial {
     public double evaluate(double x) {
 
         double evaluator = 0    ;
-
         //Add other terms
         for (Map.Entry<Integer,Integer> term: this.PolynomialTree.entrySet()) {
-            Integer power = term.getKey();
-            Integer coefficient = term.getValue();
-
-            evaluator += coefficient * (Math.pow(x,power));
+            evaluator += term.getValue() * (Math.pow(x,term.getKey()));
         }
 
         return evaluator;
@@ -138,18 +140,17 @@ public abstract class PolynomialAbstract implements Polynomial {
         String data = "";
 
         for(Map.Entry<Integer,Integer> term : this.PolynomialTree.entrySet()) {
-            Integer key = term.getKey();
-            Integer value = term.getValue();
+            Integer power = term.getKey();
+            Integer coefficient = term.getValue();
 
             //Check if it needs to add a plus symbol
-            String addSymbol = (value > 0 && key != this.getDegree())? "+" : "";
-            data += addSymbol + value;
-            data += key == 0 ? "" : this.varLabel + "^" + key + " " ;
+            String addSymbol = (coefficient > 0 && power != this.getDegree())? "+" : "";
+            data += addSymbol + coefficient;
+            data += power == 0 ? "" : this.varLabel + "^" + power + " " ;
         }
 
         return data.trim();
     }
-
 
     @Override
     public boolean equals(Object other) {
@@ -167,6 +168,6 @@ public abstract class PolynomialAbstract implements Polynomial {
 
     @Override
     public int hashCode() {
-        return Objects.hash(PolynomialTree.toString());
+        return Objects.hash(this.PolynomialTree.toString());
     }
 }

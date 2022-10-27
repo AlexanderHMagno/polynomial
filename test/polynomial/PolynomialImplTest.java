@@ -2,6 +2,8 @@ package polynomial;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,6 +18,7 @@ public class PolynomialImplTest {
     private Polynomial hyper;
     private Polynomial hyperY;
     private Polynomial empty;
+    private Polynomial emptyString;
     private Polynomial classExample;
 
     /**
@@ -31,6 +34,7 @@ public class PolynomialImplTest {
         this.hyper = new PolynomialImpl("2x^9 +3x^8 +5x^6 -4x^7 -6x^5 +7x^4 -8x^3 -9x^2 +2x +9 +1x^10");
         this.hyperY = new PolynomialImpl("2y^9 +3y^8 +5y^6 -4y^7 -6y^5 +7y^4 -8y^3 -9y^2 +2y +9 +1y^10");
         this.empty = new PolynomialImpl();
+        this.emptyString = new PolynomialImpl("");
         this.classExample = new PolynomialImpl("3x^4 -5x^3 +2x -4");
     }
 
@@ -191,6 +195,52 @@ public class PolynomialImplTest {
     }
 
     /**
+     * Testing filling an emptying a polynomial.
+     */
+    @Test
+    public void testFillingAndEmptying () {
+        Polynomial a = new PolynomialImpl("20x^9 -20x^8 +14x^7 +7x^2 -3");
+
+        a.addTerm(-20, 9);
+        assertEquals("-20x^8 +14x^7 +7x^2 -3", a.toString());
+        a.addTerm(20, 8 );
+        assertEquals("14x^7 +7x^2 -3", a.toString());
+        a.addTerm(-14, 7 );
+        assertEquals("7x^2 -3", a.toString());
+        a.addTerm(-7, 2 );
+        assertEquals("-3", a.toString());
+        a.addTerm(3, 0 );
+        assertEquals("0", a.toString());
+        a.addTerm(20, 198 );
+        assertEquals("20x^198", a.toString());
+        a.addTerm(-20, 198 );
+        assertEquals("0", a.toString());
+
+        int[] digits = {1,2,3,4,5,6,7,8,9};
+
+        Arrays.stream(digits).forEach(x-> {
+            a.addTerm(-x,0);
+            a.addTerm(x,1);
+            a.addTerm(-x,2);
+            a.addTerm(x,3);
+            a.addTerm(x,40);
+        });
+
+        assertEquals("45x^40 +45x^3 -45x^2 +45x^1 -45", a.toString());
+
+        Arrays.stream(digits).forEach(x-> {
+            a.addTerm(x,0);
+            a.addTerm(-x,1);
+            a.addTerm(x,2);
+            a.addTerm(-x,3);
+            a.addTerm(-x,40);
+        });
+
+        assertEquals("0", a.toString());
+        assertTrue(this.hyper.isSame(this.hyper.add(a)));
+    }
+
+    /**
      * Check the string is organized from greater to lower term, there is a space between terms
      */
     @Test
@@ -203,6 +253,7 @@ public class PolynomialImplTest {
         assertEquals("1x^10 +2x^9 +3x^8 -4x^7 +5x^6 -6x^5 +7x^4 -8x^3 -9x^2 +2x^1 +9", this.hyper.toString());
         assertEquals("1y^10 +2y^9 +3y^8 -4y^7 +5y^6 -6y^5 +7y^4 -8y^3 -9y^2 +2y^1 +9", this.hyperY.toString());
         assertEquals("0", this.empty.toString());
+        assertEquals("0", this.emptyString.toString());
         assertEquals("3x^4 -5x^3 +2x^1 -4", this.classExample.toString());
     }
 
