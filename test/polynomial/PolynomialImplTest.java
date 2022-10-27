@@ -274,6 +274,5 @@ public class PolynomialImplTest {
         test2.addTerm(-5,0);
 
         assertEquals(test.hashCode(),test2.hashCode());
-
     }
 }
