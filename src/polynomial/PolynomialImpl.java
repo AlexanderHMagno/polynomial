@@ -67,11 +67,8 @@ public class PolynomialImpl implements Polynomial {
         if (!(other instanceof PolynomialImpl)) throw new IllegalArgumentException();
 
         Polynomial merge = new PolynomialImpl(other.toString());
-
-        //Add other terms
-        for (Map.Entry<Integer,Integer> term: this.PolynomialTree.entrySet()) {
-            merge.addTerm(term.getValue(),term.getKey());
-        }
+        //Add terms from this to the merge Polynomial
+        this.PolynomialTree.forEach((k,v) -> merge.addTerm(v,k));
 
         return merge;
     }
